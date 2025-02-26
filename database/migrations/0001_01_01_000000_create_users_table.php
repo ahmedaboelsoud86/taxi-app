@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('otp_code');
+            $table->string('google_id')->nullable();
+            $table->tinyInteger('is_vaild_email')->default(0);
+            $table->string('role')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

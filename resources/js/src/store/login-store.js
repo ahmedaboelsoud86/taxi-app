@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore,acceptHMRUpdate } from "pinia";
 import { ref } from "vue";
 
 export const useLoginStore=defineStore('login',()=>{
@@ -22,4 +22,8 @@ export const useLoginStore=defineStore('login',()=>{
         next,
         previous,
     }
-})
+});
+if(import.meta.hot){
+    import.meta.hot.accept(acceptHMRUpdate(useLoginStore,import.meta.hot))
+}
+

@@ -12,6 +12,13 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    const IS_VALID_EMAIL = 1;
+    const ADMIN_ROLE = 'ADMIN';
+    const COUSTOMR_ROLE = 'COUSTOMR';
+    const DRIVER_ROLE = 'DRIVER';
+    const IS_INVALID_EMAIL = 0;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +28,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'role',
+        'is_vaild_email',
+        'otp_code'
     ];
 
     /**
@@ -44,5 +55,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public static function generateOTP($length = 6)
+    {
+        if ($length <= 0) {
+            return '';
+        }
+        $otp = '';
+        for ($i = 0; $i < $length; $i++) {
+            $otp .= mt_rand(0, 9);
+        }
+        return $otp;
     }
 }

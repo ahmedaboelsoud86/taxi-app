@@ -9,7 +9,13 @@ const routes = [
         path: "/signup",
         name: "signup",
         component: () => import("../pages/auth/SignUpPage.vue"),
-    }
+    },
+    {
+        path: "/dashboard",
+        name: "dashboard",
+        component: () => import("../pages/admin/DashBoardPage.vue"),
+    },
+
 ];
 
 export const router = createRouter({

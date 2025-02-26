@@ -5,6 +5,7 @@
             <keep-alive>
                 <component :is="LoginStore.currentStep" />
             </keep-alive>
+            <Router-link to="/signup">Sign up</Router-link>
             <hr>
             <button type="submit" class="btn btn-secondary">SignUp With Google</button>
 
