@@ -9,4 +9,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('/users',[AuthController::class,'register']);
+Route::controller(AuthController::class)->group(function(){
+    Route::post('/users','register');
+    Route::post('/users/login','login');
+    Route::post('/users/verify-email','vaildateUserEmail');
+});
+
+
