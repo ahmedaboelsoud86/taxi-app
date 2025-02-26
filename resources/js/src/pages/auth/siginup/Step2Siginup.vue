@@ -1,8 +1,11 @@
 <template>
     <div>
         <div class="mb-3 mt-3">
-            <label for="email">Password: ( 2 )</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <InputErrors :errors="vStep2$.password.$errors">
+                <input type="password" v-model="step2Input.password" class="form-control" placeholder="Enter password"
+                    name="password" id="password">
+
+            </InputErrors>
         </div>
 
         <button @click="siginUpStore.moveStep2" class="btn btn-secondary">Previous</button> |
@@ -11,10 +14,14 @@
     </div>
 </template>
 <script setup>
-import { onMounted } from "vue";
-import { useSiginUpStore } from '../../../store/siginup-store'
-const siginUpStore=useSiginUpStore()
-    onMounted(() => {
 
-    })
+import { useSiginUpStore } from '../../../store/siginup-store'
+import { storeToRefs } from "pinia";
+import InputErrors from "../../../components/base-components/Input-errors.vue";
+
+
+const siginUpStore = useSiginUpStore()
+const { vStep2$, step2Input } = storeToRefs(siginUpStore)
+
+
 </script>
