@@ -1,5 +1,20 @@
+<script setup>
+
+import { useSiginUpStore } from '../../../store/siginup-store'
+import { storeToRefs } from "pinia";
+import InputErrors from "../../../components/base-components/Input-errors.vue";
+import Loading from "../../../components/base-components/loading.vue";
+
+
+const siginUpStore = useSiginUpStore()
+const { vStep2$, step2Input,loading } = storeToRefs(siginUpStore)
+
+
+</script>
+
 <template>
     <div>
+        <Loading :loading="loading" />
         <div class="mb-3 mt-3">
             <InputErrors :errors="vStep2$.password.$errors">
                 <input type="password" v-model="step2Input.password" class="form-control" placeholder="Enter password"
@@ -13,15 +28,3 @@
 
     </div>
 </template>
-<script setup>
-
-import { useSiginUpStore } from '../../../store/siginup-store'
-import { storeToRefs } from "pinia";
-import InputErrors from "../../../components/base-components/Input-errors.vue";
-
-
-const siginUpStore = useSiginUpStore()
-const { vStep2$, step2Input } = storeToRefs(siginUpStore)
-
-
-</script>

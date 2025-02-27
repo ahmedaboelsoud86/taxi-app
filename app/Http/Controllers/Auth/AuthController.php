@@ -49,8 +49,11 @@ class AuthController extends Controller
         ]);
 
         if ($errors->fails()) {
-            return response($errors->errors()->all(), 422);
+            return response([
+                'errors' => $errors->errors()->all(),
+            ], 422);
         }
+
         $otp_code = User::generateOTP();
         $user = User::create([
             'name' => $fields['name'],
