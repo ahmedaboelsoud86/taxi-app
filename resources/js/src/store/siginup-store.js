@@ -69,14 +69,26 @@ export const useSiginUpStore = defineStore('siginup-store', () => {
     async function signupUser() {
         const valid = await vStep3$.value.$validate()
         if (!valid) return
-        // try
-        // {
-        //     const res =await fetch('http://localhost:8000/app/api/users/verify-email')
-        //     const data=await res.json()
-        //     console.log(data)
-        // }catch(error){
+        try {
+            loading.value = true;
+            const data = await postData("/users/verify-email", {
+                ...step3Input.value,
+                ...step1Input.value,
+            });
+            setUserData(data);
+            window.location.href='/app/dashboard'
+            successMsg(data?.message);
 
-        // }
+            loading.value = false;
+
+
+        } catch (errors) {
+            loading.value = false;
+
+            for (const message of errors) {
+                showError(message);
+            }
+        }
     }
 
 

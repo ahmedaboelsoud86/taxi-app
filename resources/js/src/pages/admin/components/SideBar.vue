@@ -1,4 +1,6 @@
 <template>
+    <h2> Name : {{  userData?.user.name  }}</h2>
+    <button @click="loginStore.logout">LogOut</button>
     <div class="nav">
         <ul>
             <li>Home</li>
@@ -8,6 +10,12 @@
     </div>
 </template>
 <script setup>
+import { getUserData } from "../../../helper/utils";
+import { useLoginStore } from "../../../store/login-store";
+
+
+const loginStore=useLoginStore()
+const userData=getUserData()
 
 </script>
 <style>

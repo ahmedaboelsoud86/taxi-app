@@ -11,6 +11,7 @@ use App\Events\NewUserCreated;
 use Hash;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Str;
+use DB;
 
 
 class AuthController extends Controller
@@ -24,17 +25,26 @@ class AuthController extends Controller
         ]);
 
         if ($errors->fails()) {
-            return response($errors->errors()->all(), 422);
+            return response([
+                'errors' => $errors->errors()->all(),
+            ], 422);
         }
         $user = User::getUserByEmail($fields['email']);
 
-        if(!$user || !Hash::check($fields['password'],$user->password)){
-            return response([ 'message' => 'user name or passoed not correct'], 401);
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response(['errors' =>
+            [
+                'message' => 'Email or passoed not correct',
+                // 'isLogged' => 'false'
+                ]
+            ], 401);
         }
 
-        $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
+        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
         return response()->json([
-            'access_token' => $token,
+            'token' => $token,
+            'isLogged' => 'true',
+            'user' => $user
         ]);
 
     }
@@ -76,16 +86,30 @@ class AuthController extends Controller
     }
     public function vaildateUserEmail(Request $request)
     {
+
+        $fields = $request->all();
+        $errors = Validator::make($fields, [
+            'otp_code' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        if ($errors->fails()) {
+            return response([
+                'errors' => $errors->errors()->all(),
+            ], 422);
+        }
         $email = $request->email;
         $otp_code = $request->otp_code;
-        $user = User::getUserByEmail($email);
+        $user = User::getUserByEmail($fields['email']);
         if (!is_null($user)) {
-            if ($user->otp_code == $otp_code) {
-                $user->where('email', $email)->update([
-                    'is_vaild_email' => User::IS_VALID_EMAIL
+            if ($user->otp_code == $fields['otp_code']) {
+                $user->where('email', $fields['email'])->update([
+                    'is_vaild_email' => User::IS_VALID_EMAIL,
                 ]);
+                $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
                 return response([
                     'message' => 'Your email has been vailded ',
+                    'token' => $token,
                     'user' => $user
                 ], 200);
             } else {
@@ -100,5 +124,16 @@ class AuthController extends Controller
                 'user' => $user
             ], 200);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        DB::table('personal_access_tokens')
+          ->where('tokenable_id',$request->userId)
+          ->delete();
+
+        return response([
+            'message' => 'User LogOut',
+        ], 200);
     }
 }

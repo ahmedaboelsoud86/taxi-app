@@ -1,4 +1,5 @@
 <template>
+    <Loading :loading="loading" />
     <span>
         <a href="#">
             {{  step1Input.email }}
@@ -18,9 +19,10 @@
 import { onMounted } from "vue";
 import { useSiginUpStore } from '../../../store/siginup-store'
 import InputErrors from "../../../components/base-components/Input-errors.vue";
+import Loading from "../../../components/base-components/loading.vue";
 import { storeToRefs } from "pinia";
 const siginUpStore = useSiginUpStore()
-const { vStep3$, step3Input,step1Input } = storeToRefs(siginUpStore)
+const { vStep3$, step3Input,step1Input,loading } = storeToRefs(siginUpStore)
 
 onMounted(() => {
 

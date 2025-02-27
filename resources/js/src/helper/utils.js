@@ -46,7 +46,7 @@ export function setUserData(data){
   localStorage.setItem('userData',JSON.stringify({
     user: data?.user,
      token:data?.token,
-     driverStatus:data?.driverStatus
+   //  driverStatus:data?.driverStatus
  }))
 }
 

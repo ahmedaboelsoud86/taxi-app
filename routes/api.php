@@ -13,6 +13,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/users','register');
     Route::post('/users/login','login');
     Route::post('/users/verify-email','vaildateUserEmail');
+    Route::post('/users/logout','logout');
 });
 
 
